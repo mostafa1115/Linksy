@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="node_modules/axios/dist/axios.min.js"></script>
+    <title>Linksy</title>
+  </head>
+  <body>
+    <!-- Loading Spinner -->
+    <div
+      id="loading"
+      class="position-fixed start-0 end-0 z-3 h-100 d-flex justify-content-center align-items-center d-none"
+    >
+      <div
+        class="bg-info bg-opacity-10 shadow d-flex justify-content-center align-items-center rounded-3"
+        style="width: 100px; height: 100px"
+      >
+        <div class="spinner-border text-primary"></div>
+      </div>
+    </div>
+
+    <section class="home min-vh-100 bg-primary bg-opacity-10">
+      <!-- NavBar -->
+      <div class="container-lg p-0 d-flex justify-content-center">
+        <div class="d-flex justify-content-center col-12 col-md-11 col-lg-8">
+          <nav
+            class="navbar navbar-expand-lg bg-light w-100 p-3 d-flex align-items-center shadow"
+            data-bs-theme="light"
+          >
+            <a class="navbar-brand fw-bolder p-0" href="index.html">Linksy</a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div
+              class="collapse navbar-collapse justify-content-between"
+              id="navbarNav"
+            >
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active fw-bold py-0"
+                    aria-current="page"
+                    href="index.html"
+                    >Home</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link py-0" href="profile.html">Profile</a>
+                </li>
+              </ul>
+              <div class="d-flex gap-2 align-items-center Auth">
+                <button
+                  type="button"
+                  class="btn btn-outline-success fw-bold"
+                  data-bs-toggle="modal"
+                  data-bs-target="#loginModal"
+                >
+                  Login</button
+                ><button
+                  type="button"
+                  class="btn btn-outline-success fw-bold"
+                  data-bs-toggle="modal"
+                  data-bs-target="#registerModal"
+                >
+                  Register
+                </button>
+              </div>
+              <div class="user-info d-flex gap-2 align-items-center d-none">
+                <img
+                  src="image/profile.webp"
+                  class="profile-image rounded-circle border border-2 border-secondary border-opacity-50"
+                  width="35px"
+                  height="35px"
+                />
+                <span class="user-name fw-semibold"></span>
+                <button type="button" class="btnLogout btn btn-danger fw-bold">
+                  Logout
+                </button>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <!-- // NavBar // -->
+
+      <div
+        class="posts container-lg d-flex align-items-center flex-column mt-5"
+      >
+        <div
+          class="d-flex flex-column align-items-center col-12 col-md-11 col-lg-8"
+        ></div>
+      </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div
+      class="modal fade"
+      id="loginModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel1">Login</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-3">
+              <input
+                id="inpUsername"
+                class="form-control"
+                type="text"
+                placeholder="Username"
+                required
+              />
+              <div class="invalid-feedback" id="errUsername"></div>
+            </div>
+
+            <div class="mb-3">
+              <input
+                id="inpPassword"
+                class="form-control"
+                type="password"
+                placeholder="Password"
+                required
+              />
+              <div class="invalid-feedback" id="errPassword"></div>
+            </div>
+          </div>
+          <div
+            class="modal-footer justify-content-center justify-content-md-end"
+          >
+            <button
+              type="button"
+              class="btn btn-secondary fw-bold"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              id="btnConfirmLogin"
+              class="btn btn-primary fw-bold"
+              type="button"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div
+      class="modal fade"
+      id="registerModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel1">Register</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="formFile" class="form-label fw-bold"
+                >Profile Image</label
+              >
+              <input class="form-control" type="file" id="user-profile-image" />
+              <div class="invalid-feedback" id="errImage"></div>
+            </div>
+            <div class="mb-3">
+              <input
+                id="inpNameRegister"
+                class="form-control"
+                type="text"
+                placeholder="Name"
+                required
+              />
+              <div class="invalid-feedback" id="errNameRegister"></div>
+            </div>
+            <div class="mb-3">
+              <input
+                id="inpUsernameRegister"
+                class="form-control"
+                type="text"
+                placeholder="Username"
+                required
+              />
+              <div class="invalid-feedback" id="errUsernameRegister"></div>
+            </div>
+
+            <div class="mb-3">
+              <input
+                id="inpPasswordRegister"
+                class="form-control"
+                type="password"
+                placeholder="Password"
+                required
+              />
+              <div class="invalid-feedback" id="errPasswordRegister"></div>
+            </div>
+          </div>
+          <div
+            class="modal-footer justify-content-center justify-content-md-end"
+          >
+            <button
+              type="button"
+              class="btn btn-secondary fw-bold"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              id="btnConfirmRegister"
+              class="btn btn-primary fw-bold"
+              type="button"
+            >
+              Register
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Post Btn -->
+    <button
+      type="button"
+      id="btnCreatePost"
+      class="btn btn-primary position-fixed fw-bolder fs-1 rounded-circle d-none shadow d-flex justify-content-center align-items-center"
+      style="top: 85%; right: 10%; height: 70px; width: 70px"
+      onclick="createPostBtnClick()"
+    >
+      +
+    </button>
+
+    <!-- Create / Edit Post Modal -->
+    <div
+      class="modal fade"
+      id="CreatePostModal"
+      tabindex="-1"
+      aria-labelledby="CreatePostModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="createPostHeader">New Post</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <input
+                id="inpTitle"
+                class="form-control fw-semibold"
+                type="text"
+                placeholder="Title"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <textarea
+                class="form-control fw-semibold"
+                id="inpBody"
+                rows="3"
+              ></textarea>
+              <div class="invalid-feedback" id="errPostBody"></div>
+            </div>
+            <div class="mb-3">
+              <label for="formFile" class="form-label fw-bold">Image</label>
+              <input class="form-control" type="file" id="inpPostImage" />
+              <div class="invalid-feedback" id="errImage"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary fw-bold"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              id="btnConfirmPost"
+              type="button"
+              class="btn btn-primary fw-bold"
+            >
+              Create
+            </button>
+            <input type="hidden" id="post-id" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Post Modal -->
+    <div
+      class="modal fade"
+      id="deletePostMoal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Deleting Post
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete this post?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              id="btnConfirmDeletePost"
+              type="button"
+              class="btn btn-danger"
+            >
+              Delete
+            </button>
+            <input type="hidden" id="del-post-id" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div
+        id="liveToast"
+        class="toast align-items-center bg-success border-0"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="d-flex">
+          <div class="toast-body text-light fw-bolder"></div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back to top btn -->
+    <i
+      class="fa-solid fa-arrow-up position-fixed bg-success text-light fw-bold rounded-circle d-flex justify-content-center align-items-center d-none shadow-lg fs-4"
+      id="btnBackToTop"
+      style="
+        bottom: 5%;
+        left: 5%;
+        z-index: 99999;
+        height: 50px;
+        width: 50px;
+        cursor: pointer;
+      "
+    ></i>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/home.js"></script>
+  </body>
+</html>
